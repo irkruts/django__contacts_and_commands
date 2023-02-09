@@ -1,0 +1,98 @@
+body {
+    background: rgb(246,246,254);
+background: linear-gradient(90deg, rgba(246,246,254,1) 0%, rgba(204,242,242,0.9570028695071778) 47%, rgba(246,246,254,1) 100%);
+}
+.logo{
+
+    width: 3em;
+    height: 3em;
+}
+.logo > img{
+    width: 3em;
+    height: 3em;
+
+}
+.my-header{
+    margin: 0px -12px;
+ background: rgb(2,0,36);
+background: linear-gradient(90deg, rgba(2,0,36,1) 0%, rgba(48,33,57,1) 4%, rgba(0,212,255,1) 100%);
+    display: flex;
+    flex-flow: row;
+    justify-content: center;
+    align-items: center;
+    height: 70px;
+
+
+}
+.nav-link{
+    color: #dad7d7;
+
+}
+.nav-link:hover {
+    color: rgba(83, 241, 222, 0.8);
+    font-size: large;
+}
+.contact-list {
+    display: block;
+}
+
+.contact-list {
+    margin-top: 30px;
+}
+.my-element-style {
+    width: fit-content;
+
+    border-radius: 5px;
+    border: 1px solid #9797de;
+
+    margin: .5em;
+    padding: .2em;
+
+
+    text-shadow: 1px 1px 2px white;
+
+    box-shadow: 0.1em 0.1em 0.5em rgb(0 0 255 / 50%);
+}
+
+.my-element-style:hover {
+    box-shadow: 0.1em 0.1em 0.1em rgb(0 0 255 / 50%);
+}
+
+
+.page-wrapper{
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+
+}
+
+.page-wrapper .main-container{
+    display: block;
+
+    flex: 1;
+}
+.my-custom-content {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+}
+
+.my-footer{
+     background: rgb(2,0,36);
+background: linear-gradient(90deg, rgba(2,0,36,1) 0%, rgba(48,33,57,1) 4%, rgba(0,212,255,1) 100%);
+      position: fixed;
+  left: 0;
+  bottom: 0;
+  width: 100%;
+  color: white;
+  text-align: center;
+    height: 30px;
+}
+
+.text-center {
+  display: flex;
+  width: 100%;
+  justify-content: center;
+  align-items: flex-end;
+}

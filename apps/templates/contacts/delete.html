@@ -5,12 +5,13 @@
 <h1>All contacts</h1>
 
 {% for contact in contacts %}
-<ul>
-    <li>The name: {{ contact.name }}</li>
-    <li>Phone number: {{ contact.phone }}</li>
-    <li>Date of birthday: {{ contact.date_of_birth }}</li>
+<ul class="contact-list">
+    <li class="my-element-style">The name: {{ contact.name }}</li>
+    <div class="my-element-style">Phone number: {{ contact.phone }}</div>
+    <div class="my-element-style">Date of birthday: {{ contact.date_of_birth }}</div>
+
     <a href="{% url 'contacts:delete' pk=contact.pk %}">
-        <button>
+        <button class="btn btn-primary">
             Delete
         </button>
     </a>
@@ -21,17 +22,17 @@
 {% endfor %}
 {% endblock %}
 
-<!-- <form action="{% url 'contacts:delete' contact.id %}" method="POST">
-  {% csrf_token %}
-  <a href="{% url 'base:index' %}">Cancel</a>
-  <input type="submit" name="Confirm">
-
-</form>
-    </a>
-
-
-    <a href="{% url 'contacts:delete' pk=contact.pk %}">
-        <button>
-            Delete
-        </button>
-    </a>-->
+{#<!-- <form action="{% url 'contacts:delete' contact.id %}" method="POST">#}
+{#  {% csrf_token %}#}
+{#  <a href="{% url 'base:index' %}">Cancel</a>#}
+{#  <input type="submit" name="Confirm">#}
+{##}
+{#</form>#}
+{#    </a>#}
+{##}
+{##}
+{#    <a href="{% url 'contacts:delete' pk=contact.pk %}">#}
+{#        <button>#}
+{#            Delete#}
+{#        </button>#}
+{#    </a>-->#}

@@ -5,14 +5,14 @@
 <h1>All contacts</h1>
 
 {% for contact in contacts %}
-<ul>
-    <li>The name: {{ contact.name }}</li>
-    <li>Phone number: {{ contact.phone }}</li>
-    <li>Date of birthday: {{ contact.date_of_birth }}</li>
 
-
+<ul class="contact-list">
+    <li class="my-element-style">The name: {{ contact.name }}</li>
+    <div class="my-element-style">Phone number: {{ contact.phone }}</div>
+    <div class="my-element-style">Date of birthday: {{ contact.date_of_birth }}</div>
 
 </ul>
+
 {% endfor %}
 
 

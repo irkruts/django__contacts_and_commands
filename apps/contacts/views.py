@@ -1,5 +1,8 @@
 from django.http import HttpResponse, HttpRequest
 from django.shortcuts import render, redirect
+from django.urls import reverse_lazy
+from django.views.generic import DeleteView
+
 from .models import Contacts
 from .forms import ContactsForm, UserForm
 
@@ -39,6 +42,12 @@ def create_contact(request: HttpRequest) -> HttpResponse:
     return render(request, "contacts/create.html", context)
 
 
+class ContactDeleteView(DeleteView):
+    model = Contacts
+    template_name = "contacts/contacts_confirm_delete.html"
+    success_url = reverse_lazy("base:index")
+
+
 def show_all_to_delete(request: HttpRequest) -> HttpResponse:
     contacts = Contacts.objects.all()
     return render(
@@ -46,13 +55,13 @@ def show_all_to_delete(request: HttpRequest) -> HttpResponse:
     )
 
 
-def delete_contact(request: HttpRequest, pk) -> HttpResponse:
-    contact = Contacts.objects.get(pk=pk)
-    form = ContactsForm(instance=contact)
-    contact.delete()
-    # context = {'contact': contact}
-    return render(
-        request,
-        "contact/delete_form.html",
-        {"title": "Delete contact", "form": form, "contact": contact},
-    )
+# def delete_contact(request: HttpRequest, pk) -> HttpResponse:
+#     contact = Contacts.objects.get(pk=pk)
+#     form = ContactsForm(instance=contact)
+#     contact.delete()
+#     # context = {'contact': contact}
+#     return render(
+#         request,
+#         "contacts/contacts_confirm_delete.html",
+#         {"title": "Delete contact", "form": form, "contact": contact},
+#     )

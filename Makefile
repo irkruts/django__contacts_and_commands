@@ -15,7 +15,7 @@ d-homework-i-purge:
 d-run:
 	@COMPOSE_DOCKER_CLI_BUILD=1 DOCKER_BUILDKIT=1 \
 		COMPOSE_PROFILES=full_dev \
-		docker-compose \
+		docker compose \
 			up --build
 
 .PHONY: d-run-i-local-dev
@@ -23,14 +23,16 @@ d-run:
 d-run-i-local-dev:
 	@COMPOSE_DOCKER_CLI_BUILD=1 DOCKER_BUILDKIT=1 \
 		COMPOSE_PROFILES=local_dev \
-		docker-compose \
+		docker compose \
 			up --build
 
 .PHONY: d-purge
 # Purge all data related with services
 d-purge:
-	@docker-compose \
+	@COMPOSE_DOCKER_CLI_BUILD=1 DOCKER_BUILDKIT=1 \
+		docker compose \
 			down --volumes --remove-orphans --rmi local --timeout 0
+
 
 
 .PHONY: homework-i-run
@@ -43,11 +45,12 @@ homework-i-run:
 homework-i-purge:
 	@echo Goodbye
 
+
 .PHONY: init-config
 # Init config files
 init-config:
-	@copy docker-compose.override.dev.yml docker-compose.override.yml && \
-		copy .env.example .env
+	@cp docker-compose.override.dev.yml docker-compose.override.yml && \
+		cp .env.example .env
 
 .PHONY: init-dev
 # Init environment for development
@@ -66,6 +69,8 @@ pre-commit-run:
 # Run tools for all files.
 pre-commit-run-all:
 	@pre-commit run --all-files
+
+
 
 .PHONY: migrations
 # Make migrations
@@ -86,4 +91,3 @@ init-dev-i-create-superuser:
 util-i-kill-by-port:
 	@sudo lsof -i:8000 -Fp | head -n 1 | sed 's/^p//' | xargs sudo kill
 
-#@sudo lsof -i:5432 -Fp | head -n 1 | sed 's/^p//' | xargs sudo kill

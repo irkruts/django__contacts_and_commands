@@ -3,8 +3,8 @@
 
 # Exclude
 !docker/app
-!core
 !apps
+!core
 !Makefile
 !manage.py
 !requirements.txt

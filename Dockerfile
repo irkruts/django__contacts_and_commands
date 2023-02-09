@@ -20,12 +20,11 @@ RUN pip install --upgrade pip && \
 
 COPY --chown=${USER} --chmod=755 ./docker/app/start.sh /start.sh
 COPY --chown=${USER} --chmod=755 ./docker/app/entrypoint.sh /entrypoint.sh
+
 COPY --chown=${USER} ./apps apps
 COPY --chown=${USER} ./core core
 COPY --chown=${USER} ./Makefile Makefile
 COPY --chown=${USER} ./manage.py manage.py
-
-
 
 USER ${USER}
 
