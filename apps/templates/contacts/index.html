@@ -1,0 +1,17 @@
+{% extends '_helpers/_base.html' %}
+
+{% block content %}
+
+<h1>All contacts</h1>
+
+{% for contact in contacts %}
+<ul>
+    <li>The name: {{ contact.name }}</li>
+    <li>Phone number: {{ contact.phone }}</li>
+    <li>Date of birthday: {{ contact.date_of_birth }}</li>
+</ul>
+{% endfor %}
+
+
+
+{% endblock %}
