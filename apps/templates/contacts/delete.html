@@ -1,0 +1,37 @@
+{% extends '_helpers/_base.html' %}
+
+{% block content %}
+
+<h1>All contacts</h1>
+
+{% for contact in contacts %}
+<ul>
+    <li>The name: {{ contact.name }}</li>
+    <li>Phone number: {{ contact.phone }}</li>
+    <li>Date of birthday: {{ contact.date_of_birth }}</li>
+    <a href="{% url 'contacts:delete' pk=contact.pk %}">
+        <button>
+            Delete
+        </button>
+    </a>
+
+
+
+</ul>
+{% endfor %}
+{% endblock %}
+
+<!-- <form action="{% url 'contacts:delete' contact.id %}" method="POST">
+  {% csrf_token %}
+  <a href="{% url 'base:index' %}">Cancel</a>
+  <input type="submit" name="Confirm">
+
+</form>
+    </a>
+
+
+    <a href="{% url 'contacts:delete' pk=contact.pk %}">
+        <button>
+            Delete
+        </button>
+    </a>-->

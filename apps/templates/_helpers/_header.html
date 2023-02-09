@@ -4,7 +4,16 @@
             <a href="{% url 'base:index' %}">Home</a>
         </li>
         <li>
-            <a href="{% url 'contacts:index' %}">Contacts</a>
+            <a href="{% url 'contacts:index' %}">Show all</a>
+        </li>
+        <li>
+            <a href="{% url 'contacts:show_to_edit' %}">Edit contact</a>
+        </li>
+        <li>
+            <a href="{% url 'contacts:create' %}">Create contact</a>
+        </li>
+        <li>
+            <a href="{% url 'contacts:show_to_delete' %}">Delete contact</a>
         </li>
     </ul>
 </header>

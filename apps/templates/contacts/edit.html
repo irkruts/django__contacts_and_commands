@@ -9,8 +9,11 @@
     <li>The name: {{ contact.name }}</li>
     <li>Phone number: {{ contact.phone }}</li>
     <li>Date of birthday: {{ contact.date_of_birth }}</li>
-
-
+    <a href="{% url 'contacts:edit' pk=contact.pk %}">
+        <button>
+            Edit
+        </button>
+    </a>
 
 </ul>
 {% endfor %}
@@ -19,9 +22,3 @@
 
 {% endblock %}
 
-
-<!-- <a href="{% url 'contacts:edit' pk=contact.pk %}">
-        <button>
-            Edit
-        </button>
-    </a> -->
