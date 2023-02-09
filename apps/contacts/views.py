@@ -1,7 +1,7 @@
 from django.http import HttpResponse, HttpRequest
 from django.shortcuts import render, redirect
 from .models import Contacts
-from .forms import ContactsForm, UserForm
+from .forms import UserForm
 
 
 def show_all_contacts(request: HttpRequest) -> HttpResponse:
@@ -20,7 +20,7 @@ def show_all_to_edit(request: HttpRequest) -> HttpResponse:
 
 def edit_contact(request: HttpRequest, pk: int) -> HttpResponse:
     contact = Contacts.objects.get(pk=pk)
-    form = ContactsForm(instance=contact)
+    form = UserForm(instance=contact)
     return render(
         request, "contacts/edit_form.html", {"title": "Edit contact", "form": form}
     )
@@ -30,7 +30,6 @@ def edit_contact(request: HttpRequest, pk: int) -> HttpResponse:
 def create_contact(request: HttpRequest) -> HttpResponse:
     form = UserForm()
     if request.method == "POST":
-        # print("Printing POST:", request.POST)
         form = UserForm(request.POST)
         if form.is_valid():
             form.save()
@@ -48,11 +47,5 @@ def show_all_to_delete(request: HttpRequest) -> HttpResponse:
 
 def delete_contact(request: HttpRequest, pk) -> HttpResponse:
     contact = Contacts.objects.get(pk=pk)
-    form = ContactsForm(instance=contact)
     contact.delete()
-    # context = {'contact': contact}
-    return render(
-        request,
-        "contact/delete_form.html",
-        {"title": "Delete contact", "form": form, "contact": contact},
-    )
+    return redirect("contacts:show_to_delete")
