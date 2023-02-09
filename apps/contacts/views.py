@@ -1,18 +1,22 @@
-from django.http import HttpResponse, HttpRequest, HttpResponseNotFound
-from django.shortcuts import render
+from django.contrib.auth import logout, login
+from django.contrib.auth.decorators import login_required
+from django.contrib.auth.forms import AuthenticationForm, UserCreationForm
+from django.contrib.auth.views import LoginView
+from django.http import HttpResponse, HttpRequest
+from django.shortcuts import render, redirect
 from django.urls import reverse_lazy
 from django.views.generic import UpdateView, ListView, CreateView, DeleteView
+from django.contrib.auth.mixins import LoginRequiredMixin
+
 
 from .models import Contacts
 
 
 class ArticleListView(ListView):
     model = Contacts
-    template_name = "contacts/contacts_list.html"
-    context_object_name = "contacts"
 
 
-class ContactUpdateView(UpdateView):
+class ContactUpdateView(LoginRequiredMixin, UpdateView):
     model = Contacts
     fields = (
         "id",
@@ -31,21 +35,22 @@ class ContactCreateView(CreateView):
         "date_of_birth",
         "avatar",
     )
-    success_url = reverse_lazy("base:index")
 
-    # def get_success_url(self):
-    #     return reverse_lazy("contacts:create")
+    def get_success_url(self):
+        return reverse_lazy("contacts:create")
+
+
+# class ContactDeleteView(LoginRequiredMixin, DeleteView):
 
 
 class ContactDeleteView(DeleteView):
     model = Contacts
-    template_name = "contacts/contacts_confirm_delete.html"
-    success_url = reverse_lazy("base:index")
 
-    # def get_success_url(self):
-    #     return reverse_lazy("contacts:delete", kwargs={"pk": self.object.pk})
+    def get_success_url(self):
+        return reverse_lazy("contacts:delete", kwargs={"pk": self.object.pk})
 
 
+@login_required(login_url="contacts:login")
 def show_all_to_edit(request: HttpRequest) -> HttpResponse:
     contacts = Contacts.objects.all()
     return render(
@@ -53,15 +58,12 @@ def show_all_to_edit(request: HttpRequest) -> HttpResponse:
     )
 
 
+@login_required(login_url="contacts:login")
 def show_all_to_delete(request: HttpRequest) -> HttpResponse:
     contacts = Contacts.objects.all()
     return render(
         request, "contacts/delete.html", {"title": "Contacts", "contacts": contacts}
     )
-
-
-def pageNotFound(request, exception):
-    return HttpResponseNotFound("<h1>Страница не найдена</h1>")
 
 
 # def delete_contact(request: HttpRequest, pk) -> HttpResponse:
@@ -73,3 +75,27 @@ def pageNotFound(request, exception):
 # "contacts/contacts_confirm_delete.html",
 # {"title": "Delete contact", "form": form, "contact": contact},
 # )
+
+
+class RegisterUserForm(CreateView):
+    form_class = UserCreationForm
+    template_name = "contacts/register.html"
+    success_url = reverse_lazy("contacts:login")
+
+    def form_valid(self, form):
+        user = form.save()
+        login(self.request, user)
+        return redirect("contacts:index")
+
+
+class LoginUser(LoginView):
+    form_class = AuthenticationForm
+    template_name = "contacts/login.html"
+
+    # def get_success_url(self):
+    #     return reverse_lazy("base:index")
+
+
+def logout_user(request):
+    logout(request)
+    return redirect("/")

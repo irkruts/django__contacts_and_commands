@@ -1,7 +1,13 @@
 {% extends "_helpers/_base.html" %}
 
 {% block content %}
+    {% if request.user.is_authenticated %}
 
-<h1 class="my-custom-content">Hello, my dear</h1>
+<h1 class="my-custom-content">Hello, my dear {{ user.username }} </h1>
 
+        {% else %}
+
+        <h1 class="my-custom-content">Hello, my dear </h1>
+
+{% endif %}
 {% endblock %}
