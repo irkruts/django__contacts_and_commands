@@ -121,3 +121,9 @@ background: linear-gradient(90deg, rgba(2,0,36,1) 0%, rgba(48,33,57,1) 4%, rgba(
 .new {
     border: 1px solid #225472;
 }
+
+/*[hidden][style="display: block;"] {*/
+/*    display: block !important;*/
+/*}*/
+
+/*[hidden][style="display: block;"] { display: block !important; }*/

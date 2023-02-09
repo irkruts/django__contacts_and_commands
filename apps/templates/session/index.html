@@ -18,4 +18,13 @@
 <span> {{ visits_time }}</span>
 </p>
 
+    <li class="nav-item">
+            <a class="nav-link active" href="{% url 'session:all_sessions' %}">Show all sessions info</a>
+        </li>
+    <li class="nav-item">
+            <a class="nav-link active" href="{% url 'session:current_sessions' %}">Show current sessions info</a>
+        </li>
+    <li class="nav-item">
+            <a class="nav-link active" href="{% url 'session:current_user' %}">Show current user info</a>
+        </li>
 {% endblock %}

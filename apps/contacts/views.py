@@ -51,7 +51,7 @@ class ContactDeleteView(DeleteView):
 
 
 @login_required(login_url="contacts:login")
-def show_all_to_edit(request: HttpRequest) -> HttpResponse:
+def show_all_to_edit(request: HttpRequest) -> HttpResponse:  # noqa F811
     contacts = Contacts.objects.all()
     return render(
         request, "contacts/edit.html", {"title": "Contacts", "contacts": contacts}
@@ -59,7 +59,7 @@ def show_all_to_edit(request: HttpRequest) -> HttpResponse:
 
 
 @login_required(login_url="contacts:login")
-def show_all_to_delete(request: HttpRequest) -> HttpResponse:
+def show_all_to_delete(request: HttpRequest) -> HttpResponse:  # noqa F811
     contacts = Contacts.objects.all()
     return render(
         request, "contacts/delete.html", {"title": "Contacts", "contacts": contacts}
@@ -96,6 +96,6 @@ class LoginUser(LoginView):
     #     return reverse_lazy("base:index")
 
 
-def logout_user(request):
+def logout_user(request):  # noqa F811
     logout(request)
     return redirect("/")

@@ -30,3 +30,6 @@ crispy-bootstrap5==0.7
 
 # For images in django
 pillow==9.3.0
+
+#For tool bar
+django-debug-toolbar==3.2.0

@@ -1,0 +1,12 @@
+{% extends "_helpers/_base.html" %}
+
+{% block content %}
+    {% for user in object_list %}
+<ul>
+    <div class="card-body">
+            <li class="my-element-style">User: {{ session.pk }}</li>
+
+    </div>
+        </ul>
+{% endfor %}
+{% endblock %}

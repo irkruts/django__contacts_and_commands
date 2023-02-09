@@ -1,3 +1,40 @@
+# run homework
+.PHONY: homework-i-run
+homework-i-run:
+	@python manage.py runserver
+
+# install requirements
+.PHONY: init-dev
+init-dev:
+	@pip install --upgrade pip && \
+	pip install --requirement requirements.txt
+
+# Run tools for files from commit.
+.PHONY: pre-commit-run
+pre-commit-run:
+	@pre-commit run
+
+# Run tools for all files.
+.PHONY: pre-commit-run-all
+pre-commit-run-all:
+	@pre-commit run --all-files
+
+# Init superuser (admin)
+.PHONY: init-dev-i-create-superuser
+init-dev-i-create-superuser:
+	@DJANGO_SUPERUSER_PASSWORD=admin1234 python manage.py createsuperuser --user admin1 --email admin@gmail.com --no-input
+
+# Kill all process on port 8000
+.PHONY: util-i-kill-by-port
+util-i-kill-by-port:
+	@sudo lsof -i:8000 -Fp | head -n 1 | sed 's/^p//' | xargs sudo kill
+
+.PHONY: init-config
+# Init config files
+init-config:
+	@cp docker-compose.override.homework.yml docker-compose.override.yml && \
+		cp .env.example .env
+
 .PHONY: d-homework-i-run
 # Make all actions needed for run homework from zero.
 d-homework-i-run:
@@ -11,66 +48,28 @@ d-homework-i-purge:
 
 
 .PHONY: d-run
-# Just run
+# Just run with docker
 d-run:
 	@COMPOSE_DOCKER_CLI_BUILD=1 DOCKER_BUILDKIT=1 \
 		COMPOSE_PROFILES=full_dev \
-		docker-compose \
+		docker compose \
 			up --build
 
-.PHONY: d-run-i-local-dev
+
+.PHONY: d-run-i-local-run
 # Just run
-d-run-i-local-dev:
+d-run-i-local-run:
 	@COMPOSE_DOCKER_CLI_BUILD=1 DOCKER_BUILDKIT=1 \
-		COMPOSE_PROFILES=local_dev \
-		docker-compose \
+		COMPOSE_PROFILES=local_run \
+		docker compose \
 			up --build
 
 .PHONY: d-purge
 # Purge all data related with services
 d-purge:
 	@COMPOSE_DOCKER_CLI_BUILD=1 DOCKER_BUILDKIT=1 \
-		docker-compose \
+		docker compose \
 			down --volumes --remove-orphans --rmi local --timeout 0
-
-
-
-.PHONY: homework-i-run
-# Run homework.
-homework-i-run:
-	@python manage.py runserver
-
-.PHONY: homework-i-purge
-# Delete all created artifacts, related with homework execution
-homework-i-purge:
-	@echo Goodbye
-
-
-.PHONY: init-config
-# Init config files
-init-config:
-	@cp docker-compose.override.dev.yml docker-compose.override.yml && \
-		cp .env.example .env
-
-.PHONY: init-dev
-# Init environment for development
-init-dev:
-	@pip install --upgrade pip && \
-	pip install --requirement requirements.txt && \
-	pre-commit install
-
-
-.PHONY: pre-commit-run
-# Run tools for files from commit.
-pre-commit-run:
-	@pre-commit run
-
-.PHONY: pre-commit-run-all
-# Run tools for all files.
-pre-commit-run-all:
-	@pre-commit run --all-files
-
-
 
 .PHONY: migrations
 # Make migrations
@@ -81,13 +80,4 @@ migrations:
 # Migrate
 migrate:
 	@python manage.py migrate
-
-
-.PHONY: init-dev-i-create-superuser
-init-dev-i-create-superuser:
-	@DJANGO_SUPERUSER_PASSWORD=admin123 python manage.py createsuperuser --user admin --email admin@gmail.com --no-input
-
-.PHONY: util-i-kill-by-port
-util-i-kill-by-port:
-	@sudo lsof -i:8000 -Fp | head -n 1 | sed 's/^p//' | xargs sudo kill
 

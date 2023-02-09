@@ -15,14 +15,12 @@ from pathlib import Path
 # noinspection PyPackageRequirements
 import environ
 
-
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 APPS_DIR = BASE_DIR.joinpath("apps")
 
 env = environ.Env()
 env.read_env(BASE_DIR.joinpath(".env"))
-
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/4.1/howto/deployment/checklist/
@@ -34,16 +32,29 @@ SECRET_KEY = env.str("DJANGO__SECRET_KEY")
 DEBUG = env.bool("DJANGO__DEBUG", False)
 
 ALLOWED_HOSTS = env.list("DJANGO__ALLOWED_HOSTS", default=[])
+
+
 if DEBUG:
     ALLOWED_HOSTS.extend(
         [
             "0.0.0.0",
             "127.0.0.1",
             "localhost",
+            "127.0.0.1:8000",
         ]
     )
 
+    # mimetypes.add_type("application/javascript", ".js", True)
+
+# if DEBUG:
+#     import socket  # only if you haven't already imported this
+#     hostname, _, ips = socket.gethostbyname_ex(socket.gethostname())
+#     INTERNAL_IPS = [ip[: ip.rfind(".")] + ".1" for ip in ips] + ["127.0.0.1", "10.0.2.2"]
 # Application definition
+
+# import mimetypes
+#
+# mimetypes.add_type("application/javascript", ".js", True)
 
 DJANGO_APPS = [
     "django.contrib.admin",
@@ -70,6 +81,7 @@ CRISPY_ALLOWED_TEMPLATE_PACKS = "bootstrap5"
 CRISPY_TEMPLATE_PACK = "bootstrap5"
 
 MIDDLEWARE = [
+    # "debug_toolbar.middleware.DebugToolbarMiddleware",
     "django.middleware.security.SecurityMiddleware",
     "django.contrib.sessions.middleware.SessionMiddleware",
     "django.middleware.common.CommonMiddleware",
@@ -77,6 +89,11 @@ MIDDLEWARE = [
     "django.contrib.auth.middleware.AuthenticationMiddleware",
     "django.contrib.messages.middleware.MessageMiddleware",
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
+    # "apps.middleware.request_log.RequestLogMiddleware",
+    # "apps.contacts.request_log.CountRequestsMiddleware",
+    # "apps.session.middleware.CustomMiddleware",
+    # "apps.session.middleware.RequestLogMiddleware",
+    "apps.session.middleware.RequestsLoggingMiddleware",
 ]
 
 ROOT_URLCONF = "core.urls"
@@ -103,7 +120,6 @@ TEMPLATES = [
 
 WSGI_APPLICATION = "core.wsgi.application"
 
-
 # Database
 # https://docs.djangoproject.com/en/4.1/ref/settings/#databases
 
@@ -113,12 +129,11 @@ DATABASES = {
         # postgres://user:password@host:port/dbname
         env.str(
             "DJANGO__DB_URL",
-            f'postgres://{env.str("POSTGRES_USER")}:{env.str("POSTGRES_PASSWORD")}'
+            f'postgresql://{env.str("POSTGRES_USER")}:{env.str("POSTGRES_PASSWORD")}'
             f'@{env.str("POSTGRES_HOST")}:{env.str("POSTGRES_PORT")}/{env.str("POSTGRES_DB")}',
         )
     )
 }
-
 
 # Password validation
 # https://docs.djangoproject.com/en/4.1/ref/settings/#auth-password-validators
@@ -138,7 +153,6 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
-
 # Internationalization
 # https://docs.djangoproject.com/en/4.1/topics/i18n/
 
@@ -149,7 +163,6 @@ TIME_ZONE = "UTC"
 USE_I18N = True
 
 USE_TZ = True
-
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/4.1/howto/static-files/
@@ -171,3 +184,64 @@ MEDIA_ROOT = BASE_DIR.joinpath("media")
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 
 LOGIN_REDIRECT_URL = "/"
+
+# INTERNAL_IPS = [
+#     "127.0.0.1",
+#     "127.0.0.1:8000",
+# ]
+
+# DEBUG_TOOLBAR_PATCH_SETTINGS = False
+
+
+# debug_toolbar moved here.
+# if DEBUG:
+#     MIDDLEWARE += [
+#         "debug_toolbar.middleware.DebugToolbarMiddleware",
+#     ]
+#     INSTALLED_APPS += [
+#         "debug_toolbar",
+#     ]
+#     INTERNAL_IPS = [
+#         "127.0.0.1",
+#     ]
+#
+#     # this is the main reason for not showing up the toolbar
+#     import mimetypes
+#
+#     mimetypes.add_type("application/javascript", ".js", True)
+#
+#     DEBUG_TOOLBAR_CONFIG = {
+#         "INTERCEPT_REDIRECTS": False,
+#     }
+#
+#     import socket
+#
+#     # tricks to have debug toolbar when developing with docker
+#     ip = socket.gethostbyname(socket.gethostname())
+#     INTERNAL_IPS += [ip[:-1] + "1"]
+
+# LOGGING = {
+#     'version': 1,
+#     # The version number of our log
+#     'disable_existing_loggers': False,
+#     # django uses some of its own loggers for internal operations. In case you want to disable them just replace
+#     the False above with true.
+
+#     # A handler for WARNING. It is basically writing the WARNING messages into a file called WARNING.log
+#     'handlers': {
+#         'file': {
+#             'level': 'WARNING',
+#             'class': 'logging.FileHandler',
+#             'filename': BASE_DIR / 'warning.log',
+#         },
+#     },
+#     # A logger for WARNING which has a handler called 'file'. A logger can have multiple handler
+#     'loggers': {
+#        # notice the blank '', Usually you would put built in loggers like django or root here based on your needs
+#         '': {
+#             'handlers': ['file'], #notice how file variable is called in handler which has been defined above
+#             'level': 'DEBUG',
+#             'propagate': True,
+#         },
+#     },
+# }
