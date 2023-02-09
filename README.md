@@ -1,11 +1,11 @@
 #Homework
 
-##Django. Contacts and CRUD.
+##Django. Admin (with superuser for this)
 
 Main task:
->Дополнить контакты. CRUD
+>Создать модель кастомного пользователя. Завязать джанго на эту модель. Можно даже не переопределять поля.
 
-All details:[HERE](https://lms.ithillel.ua/groups/62de6dfc9aec6f42f8454737/homeworks/63435bc18e760e4c3df3fbf6)
+
 
 Make all actions needed for run homework from zero `make homework-i-run`
 
@@ -21,10 +21,8 @@ $ make homework-i-purge
 
 Main routes:
 
-+ **/** - _homepage_
-+ **/contacts** - _Show all contacts_
-+ **/contacts/edit_contact/** _Show all contacts and choose which edit_
-+ **/contacts/edit_contact/<int:pk>** _Edit by id_
-+ **/contacts/create_contact/** _Create new contact_
-+ **/contacts/delete_contact/** _Show all contacts and choose which delete_
++ **/amin** - _admin_
 
+login: admin
+
+password: admin123
