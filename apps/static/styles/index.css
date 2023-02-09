@@ -40,6 +40,8 @@ background: linear-gradient(90deg, rgba(2,0,36,1) 0%, rgba(48,33,57,1) 4%, rgba(
     margin-top: 30px;
 }
 .my-element-style {
+    display: flex;
+    align-items: center;
     width: fit-content;
 
     border-radius: 5px;
@@ -96,3 +98,23 @@ background: linear-gradient(90deg, rgba(2,0,36,1) 0%, rgba(48,33,57,1) 4%, rgba(
   justify-content: center;
   align-items: flex-end;
 }
+
+
+
+.card{
+    position: relative;
+    display: flex;
+    justify-content: center;
+    flex-direction: row;
+    min-width: 0;
+    word-wrap: break-word;
+    background-color: #dee8e8;
+    background-clip: border-box;
+
+
+}
+.contact-avatar {
+    max-width: 15em;
+    align-items: center;
+}
+

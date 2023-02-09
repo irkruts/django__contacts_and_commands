@@ -1,4 +1,7 @@
+import uuid
+
 from django.db import models
+from django.urls import reverse
 
 
 class Group(models.Model):
@@ -8,6 +11,11 @@ class Group(models.Model):
         return self.name
 
     __repr__ = __str__
+
+
+def get_icon_path(instance, filename: str) -> str:
+    _, extension = filename.rsplit(".", maxsplit=1)
+    return f"contacts/contacts/avatar/{instance.pk}/{uuid.uuid4()}/avatar.{extension}"
 
 
 class Contacts(models.Model):
@@ -20,6 +28,13 @@ class Contacts(models.Model):
     created_at = models.DateTimeField(auto_now_add=True, verbose_name="Created date")
     updated_at = models.DateTimeField(auto_now=True, verbose_name="Updated date")
 
+    avatar = models.ImageField(
+        max_length=255,
+        blank=True,
+        null=True,
+        upload_to=get_icon_path,
+    )
+
     group = models.ForeignKey(
         Group,
         related_name="contacts_group",
@@ -30,6 +45,14 @@ class Contacts(models.Model):
     )
 
     objects = models.Manager()
+
+    def get_absolute_url(self):
+        return reverse("contacts:edit", kwargs={"pk": self.pk})
+
+    def __str__(self) -> str:
+        return f"{self.name} - {self.date_of_birth}"
+
+    __repr__ = __str__
 
 
 class Meta:

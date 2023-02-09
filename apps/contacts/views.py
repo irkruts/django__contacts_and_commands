@@ -1,17 +1,49 @@
-from django.http import HttpResponse, HttpRequest
-from django.shortcuts import render, redirect
+from django.http import HttpResponse, HttpRequest, HttpResponseNotFound
+from django.shortcuts import render
 from django.urls import reverse_lazy
-from django.views.generic import DeleteView
+from django.views.generic import UpdateView, ListView, CreateView, DeleteView
 
 from .models import Contacts
-from .forms import ContactsForm, UserForm
 
 
-def show_all_contacts(request: HttpRequest) -> HttpResponse:
-    contacts = Contacts.objects.all()
-    return render(
-        request, "contacts/index.html", {"title": "Contacts", "contacts": contacts}
+class ArticleListView(ListView):
+    model = Contacts
+    template_name = "contacts/contacts_list.html"
+    context_object_name = "contacts"
+
+
+class ContactUpdateView(UpdateView):
+    model = Contacts
+    fields = (
+        "id",
+        "name",
+        "date_of_birth",
+        "avatar",
     )
+    template_name_suffix = "_update_form"
+
+
+class ContactCreateView(CreateView):
+    model = Contacts
+    fields = (
+        "name",
+        "phone",
+        "date_of_birth",
+        "avatar",
+    )
+    success_url = reverse_lazy("base:index")
+
+    # def get_success_url(self):
+    #     return reverse_lazy("contacts:create")
+
+
+class ContactDeleteView(DeleteView):
+    model = Contacts
+    template_name = "contacts/contacts_confirm_delete.html"
+    success_url = reverse_lazy("base:index")
+
+    # def get_success_url(self):
+    #     return reverse_lazy("contacts:delete", kwargs={"pk": self.object.pk})
 
 
 def show_all_to_edit(request: HttpRequest) -> HttpResponse:
@@ -21,33 +53,6 @@ def show_all_to_edit(request: HttpRequest) -> HttpResponse:
     )
 
 
-def edit_contact(request: HttpRequest, pk: int) -> HttpResponse:
-    contact = Contacts.objects.get(pk=pk)
-    form = ContactsForm(instance=contact)
-    return render(
-        request, "contacts/edit_form.html", {"title": "Edit contact", "form": form}
-    )
-
-
-# https://www.youtube.com/watch?v=EX6Tt-ZW0so
-def create_contact(request: HttpRequest) -> HttpResponse:
-    form = UserForm()
-    if request.method == "POST":
-        # print("Printing POST:", request.POST)
-        form = UserForm(request.POST)
-        if form.is_valid():
-            form.save()
-            return redirect("/")
-    context = {"form": form}
-    return render(request, "contacts/create.html", context)
-
-
-class ContactDeleteView(DeleteView):
-    model = Contacts
-    template_name = "contacts/contacts_confirm_delete.html"
-    success_url = reverse_lazy("base:index")
-
-
 def show_all_to_delete(request: HttpRequest) -> HttpResponse:
     contacts = Contacts.objects.all()
     return render(
@@ -55,13 +60,16 @@ def show_all_to_delete(request: HttpRequest) -> HttpResponse:
     )
 
 
+def pageNotFound(request, exception):
+    return HttpResponseNotFound("<h1>Страница не найдена</h1>")
+
+
 # def delete_contact(request: HttpRequest, pk) -> HttpResponse:
-#     contact = Contacts.objects.get(pk=pk)
-#     form = ContactsForm(instance=contact)
-#     contact.delete()
-#     # context = {'contact': contact}
-#     return render(
-#         request,
-#         "contacts/contacts_confirm_delete.html",
-#         {"title": "Delete contact", "form": form, "contact": contact},
-#     )
+# contact = Contacts.objects.get(pk=pk)
+# form = ContactsForm(instance=contact)
+# contact.delete()
+# return render(
+# request,
+# "contacts/contacts_confirm_delete.html",
+# {"title": "Delete contact", "form": form, "contact": contact},
+# )

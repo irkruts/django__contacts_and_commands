@@ -1,0 +1,55 @@
+{% extends '_helpers/_base.html' %}
+
+{% block content %}
+
+<h1>All contacts</h1>
+
+{% comment %}
+{% if animal.avatar %}
+    <img class="contact-avatar" src="{{ contact.avatar.url }}" alt="{{ contact.name }}" />
+{% endif %}
+    <li class="my-element-style">The name: {{ contact.name }}</li>
+    <div class="my-element-style">Phone number: {{ contact.phone }}</div>
+    <div class="my-element-style">Date of birthday: {{ contact.date_of_birth }}</div>
+{% endcomment %}
+{% comment %}
+
+                            <span> The name:{{ contact.name }}.</span>
+                            <span> <hr> </span>
+                            <span> Phone number: {{ contact.phone  }}</span>
+    </li>
+    {% endcomment %}
+{% comment %}
+ <li class="my-element-style">
+                            {% if contact.avatar %}
+                                <img class="contact-avatar" src="{{ contact.avatar.url }}" alt="{{ contact.name }}" />
+                            {% endif %}
+</li>
+    <li class="my-element-style">The name: {{ contact.name }}</li>
+
+    <div class="my-element-style">Phone number: {{ contact.phone }}</div>
+    <div class="my-element-style">Date of birthday: {{ contact.date_of_birth }}</div>
+    {% endcomment %}
+
+
+
+    {% for contact in contacts %}
+<ul>
+<div class="card">
+
+    {% if contact.avatar %}
+        <img  class="contact-avatar" src="{{ contact.avatar.url }}" alt="{{ contact.name }}" />
+    {% endif %}
+
+
+    <div class="card-body">
+            <li class="my-element-style">The name: {{ contact.name }}</li>
+            <li class="my-element-style">Phone number: {{ contact.phone }}<br>Date of birthday: {{ contact.date_of_birth }}</li>
+    </div>
+</div>
+        </ul>
+
+
+{% endfor %}
+
+{% endblock %}

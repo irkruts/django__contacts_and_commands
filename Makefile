@@ -15,7 +15,7 @@ d-homework-i-purge:
 d-run:
 	@COMPOSE_DOCKER_CLI_BUILD=1 DOCKER_BUILDKIT=1 \
 		COMPOSE_PROFILES=full_dev \
-		docker compose \
+		docker-compose \
 			up --build
 
 .PHONY: d-run-i-local-dev
@@ -23,14 +23,14 @@ d-run:
 d-run-i-local-dev:
 	@COMPOSE_DOCKER_CLI_BUILD=1 DOCKER_BUILDKIT=1 \
 		COMPOSE_PROFILES=local_dev \
-		docker compose \
+		docker-compose \
 			up --build
 
 .PHONY: d-purge
 # Purge all data related with services
 d-purge:
 	@COMPOSE_DOCKER_CLI_BUILD=1 DOCKER_BUILDKIT=1 \
-		docker compose \
+		docker-compose \
 			down --volumes --remove-orphans --rmi local --timeout 0
 
 
