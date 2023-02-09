@@ -14,17 +14,23 @@ d-homework-i-purge:
 # Just run
 d-run:
 	@COMPOSE_DOCKER_CLI_BUILD=1 DOCKER_BUILDKIT=1 \
+		COMPOSE_PROFILES=full_dev \
 		docker-compose \
 			up --build
 
+.PHONY: d-run-i-local-dev
+# Just run
+d-run-i-local-dev:
+	@COMPOSE_DOCKER_CLI_BUILD=1 DOCKER_BUILDKIT=1 \
+		COMPOSE_PROFILES=local_dev \
+		docker-compose \
+			up --build
 
 .PHONY: d-purge
 # Purge all data related with services
 d-purge:
-	@COMPOSE_DOCKER_CLI_BUILD=1 DOCKER_BUILDKIT=1 \
-		docker-compose \
+	@docker-compose \
 			down --volumes --remove-orphans --rmi local --timeout 0
-
 
 
 .PHONY: homework-i-run
@@ -37,11 +43,11 @@ homework-i-run:
 homework-i-purge:
 	@echo Goodbye
 
-
 .PHONY: init-config
 # Init config files
 init-config:
-	@cp docker-compose.override.dev.yml docker-compose.override.yml
+	@copy docker-compose.override.dev.yml docker-compose.override.yml && \
+		copy .env.example .env
 
 .PHONY: init-dev
 # Init environment for development
@@ -61,8 +67,6 @@ pre-commit-run:
 pre-commit-run-all:
 	@pre-commit run --all-files
 
-
-
 .PHONY: migrations
 # Make migrations
 migrations:
@@ -80,4 +84,6 @@ init-dev-i-create-superuser:
 
 .PHONY: util-i-kill-by-port
 util-i-kill-by-port:
-	@sudo lsof -i:8000 -Fp | head -n 1 | sed 's/^p//' | xargs sudo killRUSER_PASSWORD=admin123 python manage.py createsuperuser --user admin --email admin@gmail.com --no-input
+	@sudo lsof -i:8000 -Fp | head -n 1 | sed 's/^p//' | xargs sudo kill
+
+#@sudo lsof -i:5432 -Fp | head -n 1 | sed 's/^p//' | xargs sudo kill

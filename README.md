@@ -1,22 +1,16 @@
 #Homework
 
-##Django. Docker 
+##Django. Env, Postgres, Docker Compose profiles
 
 Main task:
->Упаковать существующую домашку на Django в докер. А точнее - docker-compose.
+>Перевести какое-то из прошлых домашний заданий django (использующее базу данных) с sqlite на postgres. Убрать следы sqlite (папки, настройки).
 
 
 
-Make all actions needed for run homework from zero `d-make homework-i-run`
+Make all actions needed for run homework from zero `make d-homework-i-run`
 
 ```
 $ make d-homework-i-run
-```
-
-Delete all created artifacts from run `make d-homework-i-purge`
-
-```
-$ d-make homework-i-purge
 ```
 
 
